@@ -143,7 +143,7 @@ function initializeInfoModals() {
                 </ul>
                 <p style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9em; font-style: italic;">
                     <strong>Nota:</strong> El promedio final de esta medida se conoce como Desviación Media Absoluta (DMA).<br>
-                    <strong>Fórmula:</strong> DMA = (1/n) × Σ|xᵢ - c| donde n es la cantidad de datos, xᵢ es cada dato y c es el centro.
+                    <strong>Fórmula:</strong> DMA = (1/n) × Σ|xᵢ - x̄| donde n es la cantidad de datos, xᵢ es cada dato y x̄ es la media aritmética.
                 </p>
                 `
             );
@@ -172,7 +172,7 @@ function initializeInfoModals() {
                 <p><strong>Diferencia clave:</strong> Mientras que la primera medida trata todas las distancias de manera igual, esta medida da mayor peso a los datos que están muy alejados del centro, dándoles más importancia en el cálculo final.</p>
                 <p style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9em; font-style: italic;">
                     <strong>Nota:</strong> El promedio final de esta medida se conoce como Varianza.<br>
-                    <strong>Fórmula:</strong> Varianza = (1/n) × Σ(xᵢ - c)² donde n es la cantidad de datos, xᵢ es cada dato y c es el centro.
+                    <strong>Fórmula:</strong> Varianza = (1/n) × Σ(xᵢ - x̄)² donde n es la cantidad de datos, xᵢ es cada dato y x̄ es la media aritmética.
                 </p>
                 `
             );
