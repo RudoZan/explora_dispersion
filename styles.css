@@ -216,6 +216,32 @@ header h1 {
     }
 }
 
+.column-number.median-column {
+    position: relative;
+    z-index: 2;
+}
+
+.column-number.median-column {
+    cursor: help;
+}
+
+.column-number.median-column::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35px;
+    height: 35px;
+    background: radial-gradient(circle, rgba(100, 116, 139, 0.6) 0%, rgba(71, 85, 105, 0.4) 40%, rgba(71, 85, 105, 0.2) 70%, transparent 100%);
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    z-index: -1;
+    pointer-events: none;
+    box-shadow: 0 0 0 1px rgba(100, 116, 139, 0.2);
+}
+
+
 .stats-container {
     display: flex;
     gap: 15px;
@@ -400,6 +426,7 @@ header h1 {
     font-size: 0.9em;
     font-weight: 500;
     color: #1a1a2e;
+    transition: color 0.3s ease;
     font-family: 'Courier New', monospace;
     padding: 4px 0;
     letter-spacing: 0.5px;
@@ -409,10 +436,32 @@ header h1 {
     font-size: 0.9em;
     font-weight: 600;
     color: #34495e;
+    transition: color 0.3s ease;
     text-align: left;
     font-family: 'Courier New', monospace;
     padding: 4px 0;
     letter-spacing: 0.5px;
+}
+
+/* Estilos para medidas inválidas cuando el indicador está desbalanceado */
+.stats-container.invalid-measures .sum-display,
+.stats-container.invalid-measures .average-display {
+    color: #991b1b;
+}
+
+.invalid-warning {
+    display: none !important;
+    font-size: 0.8em;
+    color: #991b1b;
+    font-style: italic;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(153, 27, 27, 0.3);
+    text-align: center;
+}
+
+.stats-container.invalid-measures .invalid-warning {
+    display: block !important;
 }
 
 .columns-container {
@@ -544,6 +593,7 @@ header h1 {
     border-top: 1px solid rgba(189, 195, 199, 0.4);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .drop-zone {

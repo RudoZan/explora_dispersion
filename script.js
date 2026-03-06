@@ -104,7 +104,7 @@ function initializeInfoModals() {
                     </tr>
                     <tr style="vertical-align: top;">
                         <td style="width: 65%; padding: 15px 20px 15px 0;">
-                            <strong>Indicador de equilibrio:</strong> La barra horizontal con el círculo muestra el equilibrio de la dispersión de datos con respecto al centro. Cuando el círculo está verde y centrado, significa que la dispersión de datos está balanceada respecto del centro. Si está rojo o desplazado, indica que la dispersión está cargada más para un lado.
+                            <strong>Indicador de equilibrio:</strong> La barra horizontal con el círculo marcador muestra si el centro de los datos coincide con el centro seleccionado. Para que las medidas de dispersión sean matemáticamente válidas, el círculo marcador debe estar centrado y de color verde, ya que mientras cambias los bloques de columnas cambiando los valores de los datos estos centros pueden desfazarse. Si el círculo está rojo o desplazado, significa que el centro seleccionado no coincide con el centro real de los datos, y en consecuencia, las sumas y promedios calculados para las medidas de dispersión no serán matemáticamente válidos.
                         </td>
                         <td style="width: 35%; padding: 15px 0; text-align: center;">
                             <div style="width: 200px; height: 40px; margin: 0 auto; position: relative;">
@@ -415,6 +415,12 @@ function generateColumns(minColumn = null, maxColumn = null) {
             updateEquilibriumIndicator();
             // Actualizar color de la columna del centro
             updateCenterColumnColor();
+            // Marcar la columna central con el círculo
+            const centerColNumber = document.querySelector(`.column[data-column="${centerColumn}"] .column-number`);
+            if (centerColNumber) {
+                centerColNumber.classList.add('median-column');
+                centerColNumber.title = 'Desafío: descubre qué representa este círculo';
+            }
         }
         
         const columnNumber = document.createElement('div');
@@ -533,9 +539,8 @@ function updateDisplacement(square) {
         badge.textContent = displacement;
     }
     
-    // Actualizar tooltip con información del cuadrado
-    const tooltipText = `Valor: ${currentColumn}\nDistancia del centro: ${displacement}\nCentro inicial: ${initialColumn}`;
-    square.setAttribute('title', tooltipText);
+    // Remover tooltip si existe
+    square.removeAttribute('title');
     
     // Actualizar la suma total
     updateSumDisplay();
@@ -648,6 +653,7 @@ function updateComparisonVisual() {
     }
 }
 
+
 // Actualizar el indicador de equilibrio
 function updateEquilibriumIndicator() {
     const marker = document.getElementById('level-indicator-marker');
@@ -681,11 +687,29 @@ function updateEquilibriumIndicator() {
         }
     });
     
-    // Si no hay cuadrados, posicionar el marcador en la columna del centro
+    // Remover marca de mediana de todas las columnas
+    document.querySelectorAll('.column-number').forEach(colNum => {
+        colNum.classList.remove('median-column');
+    });
+    
+    // Marcar la columna central con el círculo
+    const centerColNumber = document.querySelector(`.column[data-column="${centerColumn}"] .column-number`);
+    if (centerColNumber) {
+        centerColNumber.classList.add('median-column');
+        centerColNumber.title = 'Desafío: descubre qué representa este círculo';
+    }
+    
+    // Si no hay cuadrados
     if (columnValues.length === 0) {
         marker.style.left = centerColumnPosition + '%';
         marker.style.backgroundColor = '#991b1b';
         marker.classList.remove('balanced');
+        
+        // Marcar medidas como inválidas
+        const statsContainer = document.querySelector('.stats-container');
+        if (statsContainer) {
+            statsContainer.classList.add('invalid-measures');
+        }
         return;
     }
     
@@ -715,9 +739,16 @@ function updateEquilibriumIndicator() {
     
     // Cambiar color según si está equilibrado
     const isBalanced = Math.abs(difference) < 0.01;
+    const statsContainer = document.querySelector('.stats-container');
+    
     if (isBalanced) {
         marker.style.backgroundColor = '#15803d';
         marker.classList.add('balanced');
+        
+        // Remover clase de medidas inválidas
+        if (statsContainer) {
+            statsContainer.classList.remove('invalid-measures');
+        }
         
         // Feedback visual: agregar clase al contenedor para animación sutil
         const indicatorContainer = document.querySelector('.level-indicator-container');
@@ -730,6 +761,11 @@ function updateEquilibriumIndicator() {
     } else {
         marker.style.backgroundColor = '#991b1b';
         marker.classList.remove('balanced');
+        
+        // Agregar clase de medidas inválidas para mostrar en rojo
+        if (statsContainer) {
+            statsContainer.classList.add('invalid-measures');
+        }
     }
     
     // Actualizar el color de la barra según la posición del marcador
