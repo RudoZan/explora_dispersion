@@ -1,6 +1,3 @@
-# Ignorar archivos PDF
-*.pdf
-
 # Ignorar archivos del sistema
 .DS_Store
 Thumbs.db
